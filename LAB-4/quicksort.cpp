@@ -2,7 +2,7 @@
 using namespace std;
 #define ll long long
 int arr[100] = {19, 3, 3, 9, 3, 3, 3, 3, 9};
-int part(int l, int h)//hoarepartition
+int part(int l, int h) // hoarepartition
 {
 
     int piv = arr[l];

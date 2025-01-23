@@ -15,7 +15,7 @@ void Enque(string item, int prio)
 
     if (rear[prio] == mx)
     {
-        rear[prio] = 1; // Wrap around if rear exceeds max
+        rear[prio] = 1 ;  // Wrap around if rear exceeds max
     }
     else
     {
@@ -95,9 +95,9 @@ int main()
     Enque("CCC", 3);
     Enque("DDD", 4);
     Enque("EEE", 4);
-   // Deque();
+    // Deque();
     Print();
     Enque("FFF", 1);
-     Print();
+    Print();
     return 0;
 }
