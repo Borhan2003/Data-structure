@@ -1,0 +1,93 @@
+#include <bits/stdc++.h>//o(nlogn) time complexity
+using namespace std;
+
+// Structure to hold the result
+struct SubarrayResult {
+    int maxSum;
+    int start;
+    int end;
+};
+
+// Function to find max crossing subarray sum and its indices
+SubarrayResult crossingSum(int arr[], int left, int mid, int right) {
+    int sum = 0;
+    int leftSum = INT_MIN;
+    int maxLeft = mid;
+
+    // Find max sum in left half (ending at mid)
+    for (int i = mid; i >= left; i--) {
+        sum += arr[i];
+        if (sum > leftSum) {
+            leftSum = sum;
+            maxLeft = i;
+        }
+    }
+
+    sum = 0;
+    int rightSum = INT_MIN;
+    int maxRight = mid + 1;
+
+    // Find max sum in right half (starting after mid)
+    for (int i = mid + 1; i <= right; i++) {
+        sum += arr[i];
+        if (sum > rightSum) {
+            rightSum = sum;
+            maxRight = i;
+        }
+    }
+
+    // Return the crossing subarray result
+    return {leftSum + rightSum, maxLeft, maxRight};
+}
+
+// Recursive function to find max subarray sum with positions
+SubarrayResult maxSubarraySum(int arr[], int left, int right) {
+    // Base case: only one element
+    if (left == right) {
+        return {arr[left], left, right};
+    }
+
+    int mid = (left + right) / 2;
+
+    // LSS
+    SubarrayResult lss = maxSubarraySum(arr, left, mid);
+
+    // RSS
+    SubarrayResult rss = maxSubarraySum(arr, mid + 1, right);
+
+    // CSS
+    SubarrayResult css = crossingSum(arr, left, mid, right);
+
+    // Return the one with max sum
+    if (lss.maxSum >= rss.maxSum && lss.maxSum >= css.maxSum)
+        return lss;
+    else if (rss.maxSum >= lss.maxSum && rss.maxSum >= css.maxSum)
+        return rss;
+    else
+        return css;
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter array elements: ";
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+
+    SubarrayResult result = maxSubarraySum(arr, 0, n - 1);
+
+    cout << "Maximum Subarray Sum is: " << result.maxSum << endl;
+    cout << "Subarray starts at index " << result.start
+         << " and ends at index " << result.end << endl;
+
+    // Optional: print the subarray
+    cout << "Subarray: ";
+    for (int i = result.start; i <= result.end; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+
+    return 0;
+}
